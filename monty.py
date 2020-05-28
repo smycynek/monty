@@ -44,7 +44,7 @@ def choice_012():
 
 def make_door_set():
     """ 
-    Set up thee doors numbered 0,1,2 -- set one of them
+    Set up three doors numbered 0,1,2 -- set one of them
     at random to have a prize 
     """
     door_index = choice_012()
