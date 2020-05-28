@@ -1,11 +1,11 @@
+#!/usr/bin/env python3
 """
 Super simple Monty Hall problem simulator
 """
-import sys
-import random
-import functools
 import getopt
-
+import functools
+import random
+import sys
 
 USAGE = "-t (number of trials)"
 
@@ -149,6 +149,9 @@ def trial(data):
         data["original choice wins"] += 1
 
 def trials(args):
+    """
+    Run a set of trials, collect data, print results
+    """
     NUM_TRIALS=1000
     try:
         opts, _ = getopt.getopt(args, "ht:",
