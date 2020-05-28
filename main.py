@@ -1,12 +1,21 @@
+"""
+Super simple Monty Hall problem simulator
+"""
+
 import random
 import functools
 
 class Door:
+  """ Model a door with a number, whether it has a prize,
+  whether the contestant originally chose it, or if the host
+  revealed it (presumably as empty)
+  """
   def __init__(self, number, open=False, prize=False, guessed=False):
     self.number = number
     self.open = open
     self.prize = prize
     self.guessed = guessed
+    
   def __str__(self):
     return f"Door number {self.number}, open={self.open}, prize={self.prize}, guessed={self.guessed}"
 
