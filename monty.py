@@ -16,15 +16,15 @@ class Door:
     revealed it (presumably as empty)
     """
 
-    def __init__(self, number, open=False, prize=False, guessed_originally=False):
+    def __init__(self, number, opened=False, prize=False, guessed_originally=False):
         self.number = number
-        self.open = open
+        self.opened = opened
         self.prize = prize
         self.guessed_originally = guessed_originally
 
     def winner_marker(self):
         """
-        Return a small annotation if the door is a winner and which choice, the 
+        Return a small annotation if the door is a winner and which choice, the
         alternate or original, would have chosen it.
         """
         if self.guessed_originally and self.prize:
@@ -34,7 +34,9 @@ class Door:
         return ""
 
     def __str__(self):
-        return f"Door number {self.number + 1}, open={self.open}, prize={self.prize}, guessed_originally={self.guessed_originally} {self.winner_marker()}"
+        return f"Door number {self.number + 1}, opened={self.opened}," +\
+            f"prize={self.prize}, guessed_originally={self.guessed_originally} " +\
+            f"{self.winner_marker()}"
 
 
 def choice_012():
@@ -43,9 +45,9 @@ def choice_012():
 
 
 def make_door_set():
-    """ 
+    """
     Set up three doors numbered 0,1,2 -- set one of them
-    at random to have a prize 
+    at random to have a prize
     """
     door_index = choice_012()
     doors = [Door(0), Door(1), Door(2)]
@@ -54,11 +56,14 @@ def make_door_set():
 
 
 def print_door_set(door_set):
+    """
+    Nicely format door setup
+    """
     print(functools.reduce(lambda a, b: f"{a}\n{b}", door_set))
 
 
 def initial_choice(door_set):
-    """ 
+    """
     Mark one of the doors at random as initially chosen by the
     contestant
     """
@@ -69,7 +74,7 @@ def initial_choice(door_set):
 def can_be_shown(door):
     """
     Return True if a door was not chosen originally and does not have
-    a prize 
+    a prize
     (These are the door(s) that the host can open, revealing
     an empty door, after the
     contestant makes their first choice)
@@ -83,7 +88,7 @@ def valid_alternate_choice(door):
     by the host.  This door is the "switch option" the contestant could choose
     to pick later.
     """
-    return door.guessed_originally is False and door.open is False
+    return door.guessed_originally is False and door.opened is False
 
 
 def original_choice(door):
@@ -95,13 +100,13 @@ def original_choice(door):
 def host_remove(door_set):
     """
     Find the door or doors that the host can show as empty after the contestant
-    makes their original choice, pick one at random, and mark it as "open."
+    makes their original choice, pick one at random, and mark it as "opened."
     """
     available_doors = list(filter(can_be_shown, door_set))
     index = 0
     if len(available_doors) > 1:
         index = random.randint(0, 1)
-    door_set[available_doors[index].number].open = True
+    door_set[available_doors[index].number].opened = True
     return available_doors[index].number
 
 def get_alternate_choice(door_set):
@@ -133,7 +138,7 @@ def trial(data):
     Have the host show one of the unpicked doors without a prize
     as empty
 
-    Analyze which choice was the winner, the original or the switch, 
+    Analyze which choice was the winner, the original or the switch,
     and record the results
     """
     door_set = make_door_set()
@@ -148,37 +153,36 @@ def trial(data):
     if original.prize is True:
         data["original choice wins"] += 1
 
-def trials(args):
+def run_trials(args):
     """
     Run a set of trials, collect data, print results
     """
-    NUM_TRIALS=1000
+    trials = 1000
     try:
         opts, _ = getopt.getopt(args, "ht:",
                                 ["trials=", "help"])
-    
+
         for opt, arg in opts:
             if opt in ("-h", "--help"):
                 sys.exit(1)
             elif opt in ("-t", "--trials"):
-                NUM_TRIALS = int(arg)
+                trials = int(arg)
 
-    except:
+    except (ValueError, getopt.GetoptError):
         print(FULL_USAGE)
-        sys.exit(2)     
+        sys.exit(2)
 
-    for _ in range(NUM_TRIALS):
+    for _ in range(trials):
         trial(results)
-    print(f"Trials: {NUM_TRIALS}")
+    print(f"Trials: {trials}")
     print(results)
     print(
-        f'Switch choice winner probability: {(results["switch choice wins"]/NUM_TRIALS)*100}%')
+        f'Switch choice winner probability: {(results["switch choice wins"]/trials)*100}%')
 
-    if results["switch choice wins"] + results["original choice wins"] != NUM_TRIALS:
-        print("Something really strange happened here that I obviously didn't have time to think about...")
-
+    if results["switch choice wins"] + results["original choice wins"] != trials:
+        print("""Something really strange happened here that I
+            obviously didn't have time to think about...""")
 
 if __name__ == '__main__':
     FULL_USAGE = f'{__doc__}\nUsage: python3 {sys.argv[0]} {USAGE}'
-    trials(sys.argv[1:])
-
+    run_trials(sys.argv[1:])

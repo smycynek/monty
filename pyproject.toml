@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "monty"
+version = "1.0.0"
+description = "A simple Monty Hall simulator"
+authors = ["Steven Mycynek"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
