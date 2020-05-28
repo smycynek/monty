@@ -1,11 +1,13 @@
 """
 Super simple Monty Hall problem simulator
 """
-
+import sys
 import random
 import functools
+import getopt
 
-NUM_TRIALS = 100000 # Adjust as you like
+
+USAGE = "-t (number of trials)"
 
 class Door:
     """
@@ -32,7 +34,7 @@ class Door:
         return ""
 
     def __str__(self):
-        return f"Door number {self.number}, open={self.open}, prize={self.prize}, guessed_originally={self.guessed_originally} {self.winner_marker()}"
+        return f"Door number {self.number + 1}, open={self.open}, prize={self.prize}, guessed_originally={self.guessed_originally} {self.winner_marker()}"
 
 
 def choice_012():
@@ -62,7 +64,7 @@ def initial_choice(door_set):
     """
     choice = choice_012()
     door_set[choice].guessed_originally = True
-
+    return choice
 
 def can_be_shown(door):
     """
@@ -100,7 +102,7 @@ def host_remove(door_set):
     if len(available_doors) > 1:
         index = random.randint(0, 1)
     door_set[available_doors[index].number].open = True
-
+    return available_doors[index].number
 
 def get_alternate_choice(door_set):
     """
@@ -146,14 +148,34 @@ def trial(data):
     if original.prize is True:
         data["original choice wins"] += 1
 
+def trials(args):
+    NUM_TRIALS=1000
+    try:
+        opts, _ = getopt.getopt(args, "ht:",
+                                ["trials=", "help"])
+    
+        for opt, arg in opts:
+            if opt in ("-h", "--help"):
+                sys.exit(1)
+            elif opt in ("-t", "--trials"):
+                NUM_TRIALS = int(arg)
 
-for _ in range(NUM_TRIALS):
-    trial(results)
-print(f"Trials: {NUM_TRIALS}")
-print(results)
-print(
-    f'Switch choice winner probability: {(results["switch choice wins"]/NUM_TRIALS)*100}%')
+    except:
+        print(FULL_USAGE)
+        sys.exit(2)     
 
-if results["switch choice wins"] + results["original choice wins"] != NUM_TRIALS:
-    print("Something really strange happened here that I obviously didn't have time to think about...")
+    for _ in range(NUM_TRIALS):
+        trial(results)
+    print(f"Trials: {NUM_TRIALS}")
+    print(results)
+    print(
+        f'Switch choice winner probability: {(results["switch choice wins"]/NUM_TRIALS)*100}%')
+
+    if results["switch choice wins"] + results["original choice wins"] != NUM_TRIALS:
+        print("Something really strange happened here that I obviously didn't have time to think about...")
+
+
+if __name__ == '__main__':
+    FULL_USAGE = f'{__doc__}\nUsage: python3 {sys.argv[0]} {USAGE}'
+    trials(sys.argv[1:])
 

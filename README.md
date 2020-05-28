@@ -15,12 +15,13 @@ So, I made a simulation to show the process of:
 
 ## Usage...
 ```
-python3 main.py
+python3 monty.py
 
 # output...
 ...
 ...
 ...
-Trials: 1000
-{'original choice wins': 322, 'switch choice wins': 678}
+Trials: 10000
+{'original choice wins': 309, 'switch choice wins': 691}
+Switch choice winner probability: 69.1% # will vary
 ```
