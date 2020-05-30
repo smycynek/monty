@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monty"
-version = "1.0.0"
+version = "1.0.1"
 description = "A simple Monty Hall simulator"
 authors = ["Steven Mycynek"]
 license = "MIT"

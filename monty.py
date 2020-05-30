@@ -34,7 +34,7 @@ class Door:
         return ""
 
     def __str__(self):
-        return f"Door number {self.number + 1}, opened={self.opened}," +\
+        return f"Door number {self.number + 1}: opened={self.opened}, " +\
             f"prize={self.prize}, guessed_originally={self.guessed_originally} " +\
             f"{self.winner_marker()}"
 
@@ -103,9 +103,7 @@ def host_remove(door_set):
     makes their original choice, pick one at random, and mark it as "opened."
     """
     available_doors = list(filter(can_be_shown, door_set))
-    index = 0
-    if len(available_doors) > 1:
-        index = random.randint(0, 1)
+    index = random.randint(0, len(available_doors) -1)
     door_set[available_doors[index].number].opened = True
     return available_doors[index].number
 
