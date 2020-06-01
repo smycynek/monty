@@ -29,8 +29,16 @@ python3 monty.py -t 2000 # 2000 trials, etc.
 
 # output...
 ...
-...
-...
+... other 998 trials...
+-------
+Door number 1: opened=False, prize=False, guessed_originally=True
+Door number 2: opened=True, prize=False, guessed_originally=False
+Door number 3: opened=False, prize=True, guessed_originally=False (Switch choice wins)
+-------
+Door number 1: opened=False, prize=True, guessed_originally=True (Original choice wins)
+Door number 2: opened=True, prize=False, guessed_originally=False
+Door number 3: opened=False, prize=False, guessed_originally=False
+-------
 Trials: 1000
 {'original choice wins': 309, 'switch choice wins': 691}
 Switch choice winner probability: 69.1% # will vary
