@@ -19,6 +19,8 @@ So, I made a simulation to show the process of:
 * The host asking if the contestant wants to switch doors
 * Whether the prize is behind the original guess or the alternate
 
+This simulation is then run 1000 times, and the results are summarized.
+
 Have fun!
 
 ## Usage
